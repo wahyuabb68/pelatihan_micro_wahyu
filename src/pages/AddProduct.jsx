@@ -2,15 +2,19 @@ import React, { useState } from "react"
 import LayoutWrapper from "../layout/LayoutWrapper"
 import CardPreview from "../components/Card/CardPreview"
 import Form from "../components/form/Form"
+import { useNavigate } from "react-router"
+import { ProductService } from "../service/product.service"
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
-    imageUrl: "",
-    price: "",
-    stock: "",
+    imgUrl: "",
+    price: 0,
+    stock: 0,
   })
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -20,10 +24,22 @@ const AddProduct = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    alert("Produk berhasil disimpan! (Cek console)")
-    console.log("Data Produk:", formData)
+
+    try {
+      await ProductService.createProduct({
+        title: formData.title,
+        category: formData.category,
+        imgUrl: formData.imgUrl,
+        price: parseInt(formData.price),
+        stock: parseInt(formData.stock),
+      })
+      alert("Produk berhasil disimpan! (Cek console)")
+      navigate("/")
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   return (
@@ -47,7 +63,7 @@ const AddProduct = () => {
           <CardPreview
             title={formData.title}
             category={formData.category}
-            imageUrl={formData.imageUrl}
+            imageUrl={formData.imgUrl}
             price={formData.price}
             stock={formData.stock}
           />

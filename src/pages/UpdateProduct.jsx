@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react"
 import LayoutWrapper from "../layout/LayoutWrapper"
 import CardPreview from "../components/Card/CardPreview"
 import Form from "../components/form/Form"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
+import { ProductService } from "../service/product.service"
 
 const UpdateProduct = () => {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
-    imageUrl: "",
-    price: "",
-    stock: "",
+    imgUrl: "",
+    price: 0,
+    stock: 0,
   })
 
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -23,14 +25,36 @@ const UpdateProduct = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    alert("Produk berhasil diupdate! (Cek console)")
-    console.log("Data Produk:", formData)
+
+    console.log(formData)
+    try {
+      await ProductService.updateProductById(id, {
+        title: formData.title,
+        category: formData.category,
+        imgUrl: formData.imgUrl,
+        price: parseInt(formData.price),
+        stock: parseInt(formData.stock),
+      })
+      alert("Produk berhasil diupdate!")
+      navigate("/")
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   useEffect(() => {
-    console.log("Fetching product data for ID:", id)
+    const getProductById = async () => {
+      try {
+        const response = await ProductService.getProductById(id)
+        setFormData(response.data)
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+
+    getProductById()
   }, [id])
 
   return (
@@ -45,6 +69,7 @@ const UpdateProduct = () => {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             formData={formData}
+            id={id}
           />
         </div>
 
@@ -54,7 +79,7 @@ const UpdateProduct = () => {
           <CardPreview
             title={formData.title}
             category={formData.category}
-            imageUrl={formData.imageUrl}
+            imageUrl={formData.imgUrl}
             price={formData.price}
             stock={formData.stock}
           />

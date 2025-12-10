@@ -1,8 +1,22 @@
-import { useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import categories from "../../assets/data/category.json"
+import { ProductService } from "../../service/product.service"
 
-const Form = ({ handleSubmit, handleChange, formData }) => {
+const Form = ({ handleSubmit, handleChange, formData, id }) => {
   const location = useLocation()
+
+  const navigate = useNavigate()
+
+  const deleteProductById = async (id) => {
+    try {
+      await ProductService.deleteProductById(id)
+      alert("Produk berhasil dihapus! (Cek console)")
+
+      navigate("/")
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -32,7 +46,7 @@ const Form = ({ handleSubmit, handleChange, formData }) => {
             Pilih Kategori
           </option>
           {categories.map((category) => (
-            <option key={category.id} value={category.name}>
+            <option key={category._id} value={category.name}>
               {category.name}
             </option>
           ))}
@@ -43,10 +57,10 @@ const Form = ({ handleSubmit, handleChange, formData }) => {
         <label className='form-label'>URL Gambar</label>
         <input
           type='url'
-          name='imageUrl'
+          name='imgUrl'
           className='form-input'
           placeholder='https://...'
-          value={formData.imageUrl}
+          value={formData.imgUrl}
           onChange={handleChange}
         />
       </div>
@@ -90,7 +104,11 @@ const Form = ({ handleSubmit, handleChange, formData }) => {
           : "Perbarui Produk"}
       </button>
       {location.pathname !== "/add-product" ? (
-        <button type='button' className='btn-danger'>
+        <button
+          onClick={() => deleteProductById(id)}
+          type='button'
+          className='btn-danger'
+        >
           Hapus Produk
         </button>
       ) : null}
