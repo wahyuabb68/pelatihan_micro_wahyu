@@ -4,6 +4,7 @@ import CardPreview from "../components/Card/CardPreview"
 import Form from "../components/form/Form"
 import { useNavigate } from "react-router"
 import { ProductService } from "../service/product.service"
+import Swal from "sweetalert2"
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -35,10 +36,18 @@ const AddProduct = () => {
         price: parseInt(formData.price),
         stock: parseInt(formData.stock),
       })
-      alert("Produk berhasil disimpan! (Cek console)")
+      Swal.fire({
+        title: "Success!",
+        text: "Produk berhasil ditambahkan!",
+        icon: "success",
+      })
       navigate("/")
     } catch (error) {
-      alert(error.message)
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+      })
     }
   }
 

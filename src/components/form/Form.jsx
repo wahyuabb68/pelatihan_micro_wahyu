@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router"
 import categories from "../../assets/data/category.json"
 import { ProductService } from "../../service/product.service"
+import Swal from "sweetalert2"
 
 const Form = ({ handleSubmit, handleChange, formData, id }) => {
   const location = useLocation()
@@ -10,11 +11,19 @@ const Form = ({ handleSubmit, handleChange, formData, id }) => {
   const deleteProductById = async (id) => {
     try {
       await ProductService.deleteProductById(id)
-      alert("Produk berhasil dihapus! (Cek console)")
+      Swal.fire({
+        title: "Success!",
+        text: "Produk berhasil dihapus!",
+        icon: "success",
+      })
 
       navigate("/")
     } catch (error) {
-      alert(error.message)
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+      })
     }
   }
 
