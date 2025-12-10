@@ -3,6 +3,7 @@ import LayoutWrapper from "../layout/LayoutWrapper"
 import { useEffect, useState } from "react"
 import { ProductService } from "../service/product.service"
 import Pagination from "../components/Pagination/Pagination"
+import Swal from "sweetalert2"
 
 const Home = () => {
   const [products, setProducts] = useState([])
@@ -19,7 +20,11 @@ const Home = () => {
         setLimit(response.meta.limit)
         setTotalPage(response.meta.totalPage)
       } catch (error) {
-        console.log(error)
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+        })
       }
     }
 

@@ -4,6 +4,7 @@ import CardPreview from "../components/Card/CardPreview"
 import Form from "../components/form/Form"
 import { useNavigate, useParams } from "react-router"
 import { ProductService } from "../service/product.service"
+import Swal from "sweetalert2"
 
 const UpdateProduct = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,6 @@ const UpdateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    console.log(formData)
     try {
       await ProductService.updateProductById(id, {
         title: formData.title,
@@ -37,10 +37,18 @@ const UpdateProduct = () => {
         price: parseInt(formData.price),
         stock: parseInt(formData.stock),
       })
-      alert("Produk berhasil diupdate!")
+      Swal.fire({
+        title: "Success!",
+        text: "Produk berhasil di update!",
+        icon: "success",
+      })
       navigate("/")
     } catch (error) {
-      alert(error.message)
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+      })
     }
   }
 
@@ -50,7 +58,11 @@ const UpdateProduct = () => {
         const response = await ProductService.getProductById(id)
         setFormData(response.data)
       } catch (error) {
-        console.log(error.message)
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+        })
       }
     }
 
