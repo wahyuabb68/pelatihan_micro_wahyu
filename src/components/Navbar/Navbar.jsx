@@ -1,19 +1,28 @@
 import React, { useState } from "react"
 import { ShoppingCart, User, Menu, X, Search } from "lucide-react"
 import "./style.css"
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [keyword, setKeyword] = useState("")   // <-- NEW
+  const navigate = useNavigate()              // <-- NEW
 
   const toggleMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
+    setIsMobileMenuOpen(!isMobileMenuMenuOpen)
+  }
+
+  // ketika tekan Enter
+  const handleSearchKey = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/?search=${keyword}`)
+    }
   }
 
   return (
     <nav className='navbar'>
       <NavLink to='/' className='navbar-logo'>
-        Tokopaedi
+        Tokopawahyu
       </NavLink>
 
       <ul className={`nav-links ${isMobileMenuOpen ? "active" : ""}`}>
@@ -31,7 +40,13 @@ const Navbar = () => {
       <div className='nav-actions'>
         <div className='search-box'>
           <Search size={18} color='#666' />
-          <input type='text' placeholder='Cari produk...' />
+          <input
+            type='text'
+            placeholder='Cari produk...'
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleSearchKey}
+          />
         </div>
 
         <button className='icon-btn'>

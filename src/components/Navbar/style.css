@@ -7,7 +7,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: var(--bg-color);
+  /* background-color: var(--bg-color); */
+  background-color: #04a045;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -17,7 +18,8 @@ body {
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
+color: #ffffff;
   text-decoration: none;
   letter-spacing: 1px;
 }
@@ -26,17 +28,20 @@ body {
   display: flex;
   list-style: none;
   gap: 2rem;
+ 
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: #f3f4f6;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 .nav-links a:hover {
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
+  color: #1a296b;
 }
 
 .nav-actions {
@@ -79,8 +84,8 @@ body {
   position: absolute;
   top: -5px;
   right: -8px;
-  background-color: #ef4444;
-  color: white;
+  background-color: #1a296b;
+  color: rgb(209, 140, 140);
   font-size: 0.7rem;
   width: 18px;
   height: 18px;
